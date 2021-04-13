@@ -1,5 +1,6 @@
 # Documentation of why and what
 
+Please take care that te updated Version has comments included at the respective places.
 
 1. Discuss the purpose of this database in the context of the startup, Sparkify, and their analytical goals.
 The original intention of the start up makes totally sense as insights from the data can gain interaction between user and start-up to bring worthfull features. The db will enable the start-.up to get better and quick analysis on the users. Furthermore the database can show up difficulties and missing data in the logs. 
@@ -28,5 +29,5 @@ sparkifydb=# select * from songplays;
            
 As we see in the example dataset, there were no matches for the song_id and artist_id
 
-4. What was difficult?
-T ohave no matching data made me irritationg and braought up the notebooklength issue. In this notebook you can see that i tried to match several songs.druration woith the length logdata. But there was no successful match.
+UPDATE: After feedback from Mentor we found out that at still one data point is existent.
+

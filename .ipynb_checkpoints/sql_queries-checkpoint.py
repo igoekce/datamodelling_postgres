@@ -1,4 +1,14 @@
-#ontains all your sql queries, and is imported into the last three files above.
+#contains all your sql queries, and is imported into the last three files above.
+
+'''
+####      Changes      ####
+songplay_id to SERIAL
+user_d and start_time to NOT NULL
+Deleted NOT NUll with Primary keys
+deleted song_plays column within insert as now it is serial
+On conflict solution placed
+'''
+
 # DROP TABLES
 songplay_table_drop = "DROP TABLE IF EXISTS songplay_table_drop"
 user_table_drop = "DROP TABLE IF EXISTS user_table_drop"
@@ -7,13 +17,11 @@ artist_table_drop = "DROP TABLE IF EXISTS artist_table_drop"
 time_table_drop = "DROP TABLE IF EXISTS time_table_drop"
 
 # CREATE TABLES
-
-
 songplay_table_create = (""" 
                          create table if not exists songplays (
-                         songplay_id int primary key NOT NULL,
-                         start_time timestamp,
-                         user_id varchar,
+                         songplay_id SERIAL primary key,
+                         start_time timestamp NOT NULL,
+                         user_id varchar NOT NULL,
                          level varchar,
                          song_id varchar,
                          artist_id varchar,
@@ -24,7 +32,7 @@ songplay_table_create = ("""
 
 user_table_create = ("""
                         create table if not exists users (
-                        user_id varchar primary key NOT NULL,
+                        user_id varchar primary key,
                         first_name varchar,
                         last_name varchar,
                         gender varchar,
@@ -45,7 +53,7 @@ song_table_create = ("""
 
 artist_table_create = ("""
                         create table if not exists artists (
-                        artist_id varchar primary key NOT NULL,
+                        artist_id varchar primary key,
                         name varchar,
                         location varchar,
                         latitude float,
@@ -54,7 +62,7 @@ artist_table_create = ("""
 
 time_table_create = ("""
                         create table if not exists time (
-                        start_time timestamp primary key NOT NULL,
+                        start_time timestamp primary key,
                         hour int,
                         day int,
                         week int,
@@ -67,10 +75,8 @@ time_table_create = ("""
 
 
 # INSERT RECORDS
-
 songplay_table_insert = ("""
                             INSERT INTO songplays (
-                                songplay_id,
                                  start_time,
                                  user_id,
                                  level,
@@ -79,7 +85,7 @@ songplay_table_insert = ("""
                                  session_id ,
                                  location ,
                                  user_agent )
-                                VALUES (%s, %s, %s, %s, %s,%s,%s,%s,%s)
+                                VALUES (%s, %s, %s, %s,%s,%s,%s,%s)
                                 ON CONFLICT DO NOTHING
 """)
 
@@ -91,7 +97,7 @@ user_table_insert = ("""
                             gender,
                             level)
                             VALUES (%s, %s, %s, %s, %s)
-                            ON CONFLICT DO NOTHING
+                            ON CONFLICT(user_id) DO UPDATE SET level = excluded.level
 """)
 
 song_table_insert = ("""
@@ -116,7 +122,6 @@ artist_table_insert = ("""
                             ON CONFLICT DO NOTHING
 """)
 
-
 time_table_insert = ("""
                         INSERT into time(
                             start_time ,
@@ -131,7 +136,6 @@ time_table_insert = ("""
 """)
 
 # FIND SONGS
-
 song_select = ("""
                     SELECT songs.song_id, artists.artist_id
                                        FROM songs 
@@ -145,6 +149,5 @@ song_select = ("""
 
 
 # QUERY LISTS
-
 create_table_queries = [songplay_table_create, user_table_create, song_table_create, artist_table_create, time_table_create]
 drop_table_queries = [songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
